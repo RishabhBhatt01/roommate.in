@@ -5,6 +5,8 @@ import userRoute from './Routes/userRoutes.js';
 import cors from "cors";
 import otpRouter from "./Routes/otpRoutes.js";
 import imageRoutes from "./Routes/imageRoutes.js";
+import passwordRoutes from "./Routes/passwordRoutes.js"
+import cookieParser from 'cookie-parser';
 
 // dotenv.config is used to load environment variables
 dotenv.config();
@@ -18,13 +20,18 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 // Middleware to parse JSON
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // frontend origin
+  credentials: true,               // allow cookies
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 // APIs
 app.use('/api',userRoute);
 app.use("/api",otpRouter);
 app.use('/api',imageRoutes);
+app.use('/api',passwordRoutes);
 
 // Test route
 app.get('/',(req,res) => {
