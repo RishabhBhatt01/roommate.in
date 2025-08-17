@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const VerifyOtp = () =>{
   const location = useLocation();
-  const {sessionId} = location.state || {}; 
+  const {sessionId , phone} = location.state || {}; 
   const [otp,setOtp] = useState("");
   const [isVerifying,setIsVerifying] = useState(false);
   const navigate = useNavigate();
@@ -25,12 +25,17 @@ const VerifyOtp = () =>{
     try {
       const response = await axios.post("http://localhost:5000/api/verify-otp",
       {
-        otp,sessionId
+        otp,
+        sessionId,
+        phone
       },
       );
 
       // Checking if otp is verified or not
       if(response.data.verified){
+        alert("bahut sahi... verified");
+
+        
         navigate("/password");
       } else{
         alert("otp verification failed")
@@ -56,7 +61,7 @@ const VerifyOtp = () =>{
       />
       <button type="submit" disabled={isVerifying}>
         {isVerifying ? "Verifying .." : "Verify"}      
-      verify</button>
+        </button>
     </form>
   )
 }
