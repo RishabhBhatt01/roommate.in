@@ -1,22 +1,25 @@
 // Import axios to make Http requests.
 import axios from "axios";
+import User from "../models/User";
+import jwt from "jsonwebtoken"
+import { JWT_SECRET_KEY } from "../config/envConfig";
 export const sendOtp = async (req,res) => {
   try{
 
 
 // Storing data like this is called destructure.
-  const {mobile} = req.body;
+  const {phone} = req.body;
 
 
   // Check if mobile number exists in the request
-  if(!mobile){
+  if(!phone){
     return res.status(400).json({error : "Mobile number required"});
   }
 
 // Building the 2factor API URL
 
 const apiKey = process.env.TWOFACTOR_API_KEY;
-const url = `https://2factor.in/API/V1/${apiKey}/SMS/${mobile}/AUTOGEN`
+const url = `https://2factor.in/API/V1/${apiKey}/SMS/${phone}/AUTOGEN`
 
 // Making a GET request to 2factor api
 const response = await axios.get(url);
@@ -26,7 +29,7 @@ console.log("Otp sent Response ", response.data);
 
   // respond back to the frontend : 
   res.status(200).json({
-    message : `OTP sent to : ${mobile}`,
+    message : `OTP sent to : ${phone}`,
     sessionId : response.data.Details,
   });
 } catch(error){
@@ -44,7 +47,7 @@ console.log("Otp sent Response ", response.data);
 export const verifyOtp = async (req,res) => {
   try{
     
-    const {sessionId, otp} = req.body;
+    const {sessionId, otp,phone} = req.body;
 
     // validate input
     if(!sessionId || !otp){
@@ -62,6 +65,26 @@ export const verifyOtp = async (req,res) => {
 
     // checking if otp matched
     if (verifyResponse.data.Details === "OTP Matched"){
+      const user = await User.findOne({phone});
+
+      const token = jwt.sign(
+        {
+          id : user._id,
+          role:user.role
+        },
+        JWT_SECRET_KEY,
+        {expiresIn : "7d"}
+      );
+      
+     res.cookie("token",token,{
+      httpOnly : true,
+      secure : false,
+      sameSite : "Strict",
+      maxAge : 7*24*60*60*1000
+     })
+
+
+
       return res.status(200).json({
         message : "Otp verified",
         verified : true,
