@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const UserRegistration = () =>{
   const [username,setusername] = useState("");
@@ -75,6 +76,7 @@ const UserRegistration = () =>{
       />
       <label htmlFor="role2">Owner</label>
 
+      <br /> <br />
 
       {/* Entering Mobile number */}
 
@@ -85,7 +87,10 @@ const UserRegistration = () =>{
       onChange={(e)=> setPhone(e.target.value)}
       value={phone}
       />
+      <br /><br />
       <button type="submit">Register & Send OTP</button>
+
+      <Link to="/login">Already have an account? Log in</Link>
 
 
     </form>
