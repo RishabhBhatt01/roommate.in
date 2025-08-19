@@ -1,10 +1,7 @@
-// frontend/src/components/ImageUpload.jsx
-
 // 1. Import necessary hooks and axios
 import React, { useState } from 'react';
 import axios from 'axios'; // used to send HTTP requests
 
-const userId = "688ed93bcccea1797ff9bd47";
 
 const ImageUpload = () => {
   // 2. Local state to store the selected file
@@ -25,7 +22,6 @@ const ImageUpload = () => {
     // 5. Prepare the form data (important for file uploads)
     const formData = new FormData();
     formData.append("file", file); // "file" is the key that backend will use
-    formData.append("userId",userId);
 
     try {
       // 6. Send a POST request to backend (make sure this path matches your backend route)
@@ -33,6 +29,7 @@ const ImageUpload = () => {
         headers: {
           "Content-Type": "multipart/form-data", // Required for file uploads
         },
+        withCredentials : true
       });
 
       // 7. Handle success
@@ -61,3 +58,4 @@ const ImageUpload = () => {
 
 // 10. Export the component for use in App.jsx
 export default ImageUpload;
+
