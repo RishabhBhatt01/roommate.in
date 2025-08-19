@@ -1,5 +1,6 @@
 // Controller function: handles the response after upload
 import User from "../models/User.js"
+
 export const imageResponse = async(req, res) => {
   try{
     console.log("Uploaded file info : ",req.file);
@@ -7,7 +8,8 @@ export const imageResponse = async(req, res) => {
     return res.status(400).json({ error: "No file uploaded" });
   }
 
-  const {userId} = req.body;
+  const userId = req.user.id;
+  console.log(userId);
   const updatedUser = await User.findByIdAndUpdate(
     userId,
     {profilePicture : req.file.path},
