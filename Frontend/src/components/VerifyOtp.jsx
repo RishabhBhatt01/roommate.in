@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+
 
 
 const VerifyOtp = () =>{
@@ -11,10 +12,12 @@ const VerifyOtp = () =>{
   const [isVerifying,setIsVerifying] = useState(false);
   const navigate = useNavigate();
 
-  if(!sessionId){
+  useEffect(() => {
+  if (!sessionId) {
     alert("No otp session found, Enter Mobile First");
-    navigate("/phone")
+    navigate("/");
   }
+}, []);
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
@@ -29,6 +32,9 @@ const VerifyOtp = () =>{
         sessionId,
         phone
       },
+      {
+        withCredentials : true, // crucial to attach cookies
+      }
       );
 
       // Checking if otp is verified or not
