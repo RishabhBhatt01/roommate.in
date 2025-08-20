@@ -38,10 +38,7 @@ const VerifyOtp = () =>{
       );
 
       // Checking if otp is verified or not
-      if(response.data.verified){
-        alert("bahut sahi... verified");
-
-        
+      if(response.data.verified){        
         navigate("/password");
       } else{
         alert("otp verification failed")
