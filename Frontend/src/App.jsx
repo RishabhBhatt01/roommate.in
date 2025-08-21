@@ -1,23 +1,39 @@
 import { useState } from 'react'
-import PhoneInput from './components/PhoneInput.jsx';
+import { Navigate } from 'react-router-dom';
 import ImageUpload from './components/ImageUpload.jsx';
-import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
+import {BrowserRouter as Router,Routes,Route, BrowserRouter} from 'react-router-dom';
 import VerifyOtp from './components/VerifyOtp.jsx';
 import PasswordInput from './components/PasswordInput.jsx'
 import UserRegistration from './components/UserRegistration.jsx'
+import Login from './components/Login.jsx';
+import Home from './components/Home.jsx';
+import Owner from './components/Owner.jsx';
+import RoomInfo from './components/Roominfo.jsx';
+import RoomImg from './components/Roomimage.jsx';
+
 
 function App() {
-
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path='/' element = {<UserRegistration/>}/>
-        <Route path="/upload" element = {<ImageUpload/>} />
-        <Route path='/phone' element = {<PhoneInput/>} />
         <Route path='/verify' element = {<VerifyOtp/>} />
         <Route path="/password" element = {<PasswordInput/>} />
+        <Route path='/login' element = {<Login/>}/>
+
+
+        <Route path="/Home" element ={<Home/>}/>
+        <Route path="/upload" element = {<ImageUpload/>} />
+        <Route path="/owner"  element = {<Owner/> }/>
+        <Route path='/room-info' element = {<RoomInfo/>}/>        
+        <Route path='/room-img' element = {<RoomImg/>}/>
+
+
+        {/* catch all other routes */}
+
+        <Route path='*' element = {<Navigate to ="/"/>}  />
       </Routes>
-    </Router>
+    </BrowserRouter>
   )
 }
 
