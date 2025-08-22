@@ -7,6 +7,8 @@ import otpRouter from "./Routes/otpRoutes.js";
 import imageRoutes from "./Routes/imageRoutes.js";
 import passwordRoutes from "./Routes/passwordRoutes.js"
 import cookieParser from 'cookie-parser';
+import loginRoutes from './Routes/loginRoutes.js'
+import ownerRoutes from './Routes/ownerRoutes.js'
 
 // dotenv.config is used to load environment variables
 dotenv.config();
@@ -32,6 +34,8 @@ app.use('/api',userRoute);
 app.use("/api",otpRouter);
 app.use('/api',imageRoutes);
 app.use('/api',passwordRoutes);
+app.use('/api',loginRoutes);
+app.use('/api',ownerRoutes);
 
 // Test route
 app.get('/',(req,res) => {
