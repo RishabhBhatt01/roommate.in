@@ -6,7 +6,7 @@ export const requireAuth = (req,res,next) => {
   const token = req.cookies.token;
   if(!token)
     return(
-  res.status(401).json({error : "Unauthoeized"})
+  res.status(401).json({error : "Unauthorized"})
   )
 
   try{
