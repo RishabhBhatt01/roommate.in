@@ -1,17 +1,8 @@
 import mongoose from "mongoose";
 const ownerSchema = new mongoose.Schema({
-  id:{
-    type : String,
-    required,
-    unique : true,
-  },
-  username : {
-    type : String,
-    required,
-  },
-  phone : {
-    type : String,
-    required,
+  userId:{
+    type : mongoose.Schema.Types.ObjectId,// as it's user's id so it can't be string , i used it in this way so i can fetch it later
+    required : true,
     unique : true,
   },
   address : {
@@ -21,7 +12,6 @@ const ownerSchema = new mongoose.Schema({
   g_address : {
     type : String,
     required : true,
-    unique : true
   },
   ownerEmail : {
     type : String,
@@ -31,7 +21,6 @@ const ownerSchema = new mongoose.Schema({
   ownerPin : {
     type : String,
     required : true,
-    unique : true,
   }
 
 })
