@@ -3,6 +3,8 @@ import axios from "axios";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken"
 import { JWT_SECRET_KEY } from "../config/envConfig.js";
+import cookieToken from "../utils/token.js"
+
 export const sendOtp = async (req,res) => {
   try{
 
@@ -66,19 +68,11 @@ export const verifyOtp = async (req,res) => {
     // checking if otp matched
     if (verifyResponse.data.Details === "OTP Matched"){
       const user = await User.findOne({phone});
+      const token = cookieToken(user);
 
-      const token = jwt.sign(
-        {
-          id : user._id,
-          role:user.role
-        },
-        JWT_SECRET_KEY,
-        {expiresIn : "7d"}
-      );
-      
+
      res.cookie("token",token
       ,
-      
       {
       httpOnly : true,
       secure : false,
