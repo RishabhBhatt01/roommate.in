@@ -1,5 +1,5 @@
 import User from "../models/User.js"
-export const getUser = async(req,res) =>{
+export const getUsers = async(req,res) =>{
   try{
     const user = await User.find();
     res.json(user);
@@ -7,6 +7,33 @@ export const getUser = async(req,res) =>{
   catch(err){
     res.status(500).json({error : "Something went wrong"});
   }
+}
+export const getUser = async (req,res) =>{
+  try{
+    console.log("At least visited to getUser")
+    const userId = req.user._id;
+    const userRole = req.user.role;
+
+    if(!userId){
+      return res.status(404).json({message : "User not found"});
+    }
+
+    const userData = await User.findById(userId);
+    if(!userData){
+      res.status(404).json({message : "Can't find user in DB"});
+    }
+    res.status(200).json({
+      role : userData.role,
+      name : userData.username
+    })
+    console.log(userData.role);
+
+
+  }catch(error){
+    return res.json({error : error})
+
+  }
+
 }
 
 export const setUser = async(req,res)=>{
