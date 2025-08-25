@@ -3,12 +3,8 @@ import Owner from "../models/Owner.js";
 
 const owner = async (req, res) => {
   try {
-    console.log("=== DEBUGGING OWNER CONTROLLER ===");
-    console.log("req.user:", req.user);
     
-    // Handle both 'id' and '_id' fields from JWT token
     const userId = req.user._id;
-    console.log("Using userId:", userId);
     
     if (!userId) {
       console.log("No user ID found in token");
