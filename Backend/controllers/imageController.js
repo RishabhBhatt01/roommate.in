@@ -8,7 +8,7 @@ export const imageResponse = async(req, res) => {
     return res.status(400).json({ error: "No file uploaded" });
   }
 
-  const userId = req.user.id;
+  const userId = req.user._id;
   console.log(userId);
   const updatedUser = await User.findByIdAndUpdate(
     userId,
