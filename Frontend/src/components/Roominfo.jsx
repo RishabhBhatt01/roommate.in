@@ -5,15 +5,12 @@ import { useNavigate } from "react-router-dom";
 const RoomInfo = () =>{
 
     const [submitting,setSubmitting] =useState(false);
-    const [address,setAddress] = useState("");
-    const [g_address,setg_address] = useState("");
-    const [roomLength,setRoomLength] = useState("");
-    const [roomWidth,setRoomWidth] = useState("");
-    const [numberOfRooms,setNumberOfRooms] = useState("");
-    const [ownerPin,setOwnerPin] = useState("")
-    const [ownerPhone,setOwnerPhone] = useState("");
-    const [ownerEmail,setOwnerEmail] = useState("");
-    const [Price,setPrice] = useState("");
+    const [roomAddress,setRoomAddress] = useState("");
+    const [houseNumber,setHouseNumber] = useState("");
+    const [pinCode,setPinCode] = useState("");
+    const [roomSize,setRoomSize] = useState("");
+    const [landMark,setLandMark] = useState("");
+    const [roomPrice,setRoomPrice] = useState("");
     const navigate = useNavigate();
 
 
@@ -25,53 +22,89 @@ const RoomInfo = () =>{
   try{
     const response = await axios.post("http://localhost:5000/api/room-info",
 
-        {address,g_address,ownerPhone,ownerEmail,ownerPin},
+        {roomAddress,houseNumber,pinCode,landMark,roomSize,roomPrice},
         {withCredentials : true}
     )
+    console.log(response.data);
+    alert("sucessfully submitted");
     navigate("/room-img")
 
   }catch(error){
     setSubmitting(false)
     console.log("error",error);
+    if(error.response){
+      alert(error.response.message ||error.response.error || "frontend can't see you")
+    }
 
   }
 }
 
   return(
     <>
-    <h1>Owner's Dashboard</h1>
-    <form>
-      <label htmlFor="dimension">Enter dimension</label>
-      <input 
-      id="dimension"
-      type="number"
-      pattern="\d{4}"
-      placeholder="Enter length in ft."
-      name="roomLength"
-      value={roomLength}
-      onChange={(e) => setRoomLength(e.target.value)}
-      />
-       x 
-      <input 
-      id="dimension"
-      type="number" 
-      placeholder="Enter Breadth in ft." 
-      pattern="\d{4}"
-      name="roomWidth"
-      value={roomWidth}
-      onChange={(e) => setRoomWidth(e.target.value)}
+    <h1>Room's Information</h1>
+    <form onSubmit={handleSubmit}>
 
+{/*  Entering address */}
+      <label htmlFor="">Enter room's address : </label>
+      <input type="text" 
+      id="address"
+      placeholder="Enter room address"
+      name="roomAddress"
+      value={roomAddress}
+      onChange={(e) => setRoomAddress(e.target.value)}
+      required
+      />
+
+      <br /><br />
+
+      {/* Enter flat/house/street number and name */}
+
+      <label htmlFor="houseNumber">Enter House Number </label>
+      <input 
+      id="houseNumber"
+      type="number"
+      placeholder="like b12, 307 (seperate it using comma)"
+      name="houseNumber"
+      value={houseNumber}
+      onChange={(e) => setHouseNumber(e.target.value)}
       />
       <br /><br />
 
-      <label htmlFor="roominfo">Enter room info</label>
-      <input type="number"
-      placeholder="Select number of rooms"
-      id="roominfo"
-      name="numberOfRooms"
-      value={numberOfRooms}
-      min={1} // minimum number of rooms
-      onChange={(e) => setNumberOfRooms(e.target.value)}
+      {/* Entering PIN */}
+
+      <label htmlFor="pinCode">Enter Pin Code</label>
+      <input 
+      id="pinCode"
+      type="number"
+      pattern="\d{6}"
+      placeholder="Enter pin code"
+      name="pinCode"
+      value={pinCode}
+      onChange={(e) => setPinCode(e.target.value)}
+      />
+      <br /><br />
+
+      <label htmlFor="landmark">Enter landmark</label>
+      <input 
+      id="landmark"
+      type="text"
+      placeholder="eg. near post office"
+      name="landMark"
+      value={landMark}
+      onChange={(e) => setLandMark(e.target.value)}
+      />
+      <br /><br />
+
+  {/* Enter room Size */}
+      <label htmlFor="roomSize">Enter Room size</label>
+      <input 
+      id="roomSize"
+      type="number"
+      pattern="\d{4}"
+      placeholder="like 1 for 1 bhk"
+      name="roomSize"
+      value={roomSize}
+      onChange={(e) => setRoomSize(e.target.value)}
       />
       <br /><br />
 
@@ -81,14 +114,14 @@ const RoomInfo = () =>{
       type="text" 
       placeholder="Room Price(GST included)"
       id="RoomPrice"
-      name="RoomPrice"
-      value={Price} 
-      onChange={(e) => setPrice(e.target.value)}
+      name="roomPrice"
+      value={roomPrice} 
+      onChange={(e) => setRoomPrice(e.target.value)}
 
 
       /><br /><br />
 
-      <button onSubmit={handleSubmit} disabled={submitting}> 
+      <button disabled={submitting}> 
         {submitting ? "submitting" : "submit"}
       </button>
     </form>
