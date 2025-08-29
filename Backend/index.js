@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import loginRoutes from './Routes/loginRoutes.js'
 import ownerRoutes from './Routes/ownerRoutes.js'
 import addressRoutes from './Routes/addressRoutes.js'
+import roomRoutes from './Routes/roomRoutes.js'
 
 // dotenv.config is used to load environment variables
 dotenv.config();
@@ -37,6 +38,7 @@ app.use('/api',imageRoutes);
 app.use('/api',passwordRoutes);
 app.use('/api',loginRoutes);
 app.use('/api',ownerRoutes);
+app.use('/api',roomRoutes);
 app.use('/api',addressRoutes);
 
 // Test route
