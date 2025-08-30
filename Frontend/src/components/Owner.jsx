@@ -26,7 +26,6 @@ const Owner = () =>{
   }catch(error){
     if(error.response){
       alert(error.response.data.error || "Something went wrong");
-      navigate("/home");
     }
     setSubmitting(false)
     console.log("error",error);
@@ -36,12 +35,8 @@ const Owner = () =>{
 
   return(
     <>
-    <h1>Owner's Dashboard</h1>
+    <h1>Owner's INFORMATION</h1>
     <form onSubmit={handleSubmit}>
-
-
-
-
       <label htmlFor="ownerEmail">Enter Email </label>
       <input 
       type="email"
@@ -50,6 +45,7 @@ const Owner = () =>{
       name="ownerEmail"
       value={ownerEmail}
       onChange={(e) => setOwnerEmail(e.target.value)}
+      required
       />
       <br /><br />
 
@@ -60,6 +56,7 @@ const Owner = () =>{
       id="ownerAadhaar"
       name="ownerAadhaar"
       value={ownerAadhaar}
+  
       onChange={(e) => setOwnerAadhaar(e.target.value)}
       />
       <br /><br />
