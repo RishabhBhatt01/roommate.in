@@ -10,6 +10,7 @@ import Home from './components/Home.jsx';
 import Owner from './components/Owner.jsx';
 import RoomInfo from './components/Roominfo.jsx';
 import RoomImg from './components/Roomimage.jsx';
+import AvailableRooms from './components/AvailableRooms.jsx';
 
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
         <Route path="/owner"  element = {<Owner/> }/>
         <Route path='/room-info' element = {<RoomInfo/>}/>        
         <Route path='/room-img' element = {<RoomImg/>}/>
+        <Route path='/available-rooms' element = {<AvailableRooms/>}/>
+
 
 
         {/* catch all other routes */}
