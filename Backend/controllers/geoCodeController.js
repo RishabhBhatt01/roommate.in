@@ -1,29 +1,42 @@
 import axios from "axios";
 import { GOOGLE_MAPS_API_KEY } from "../config/envConfig.js";
 import Owner from '../models/Owner.js'
+import Room from "../models/Room.js";
 
 export const geocodeOwnerAddress = async (req,res) => {
 
-  // checking if the owner exists : 
+  // checking if the user exists : 
   const userId = req.user._id;
   
   if(!userId){
     return res.status(404).json({error : "User does not exist"});
   }
-  
-  const owner = await Owner.findOne({userId : userId});
 
-  if(!owner){
+  // const getting owner using userid
+  const owner = await Owner.findOne({userId : userId});
+    if(!owner){
     return res.status(400).json({error : "Can't find the owner"});
   }
 
-  // if(owner.role != "owner"){
-  //   return res.status(404).json({error : "User is not an owner"});
-  // }
-  const address = owner.address;
 
-  const apiKey = GOOGLE_MAPS_API_KEY;
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`;
+  // finding address of the room provided by owner.
+  const ownerId = owner._id;
+  
+  // finding room attached by a owner : 
+  const room = await Room.findOne({ownerId : ownerId});
+
+  if(!room){
+    return res.status(400).json({error : "can't find the room"});
+  }
+  const address = room.roomAddress;
+  const pin = room.pinCode;
+  const houseNumber = room.houseNumber;
+
+
+  console.log(houseNumber + "," + address + pin);
+  const fullAddress = houseNumber + "," + address + "+" + pin
+  
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullAddress)}&key=${GOOGLE_MAPS_API_KEY}`;
 
   
   
