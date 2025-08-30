@@ -1,18 +1,35 @@
 import mongoose from "mongoose";
+//  {roomAddress,houseNumber,pinCode,landMark,roomSize,RoomPrice},
 const roomSchema = new mongoose.Schema({
-  length : {
+  ownerId :{
+    type : mongoose.Types.ObjectId,
+    ref : 'Owner',
+    required : true,
+    unique : true,
+  },
+  ownerName:{
     type : String,
     required : true,
   },
-  breadth : {
+  roomAddress : {
     type : String,
     required : true,
   },
-  totalRooms : {
+  houseNumber : {
     type : String,
     required : true,
   },
-  price : {
+  pinCode : {
+    type : String,
+    required : true,
+  },
+  landMark : {
+    type : String,
+  },
+  roomSize : {
+    type : String,
+  },
+  roomPrice : {
     type : String,
     required : true,
   }
