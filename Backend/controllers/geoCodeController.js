@@ -4,6 +4,7 @@ import Owner from '../models/Owner.js'
 import Room from "../models/Room.js";
 
 export const geocodeOwnerAddress = async (req,res) => {
+try{
 
   // checking if the user exists : 
   const userId = req.user._id;
@@ -42,9 +43,16 @@ export const geocodeOwnerAddress = async (req,res) => {
   
   const response = await axios.get(url);
 
-
   if (response.data.status === "OK") {
     const { lat, lng } = response.data.results[0].geometry.location;
+
+    await Room.findByIdAndUpdate(room._id, {
+    addressCoordinates: { type: "Point", coordinates: [lng, lat] }
+},
+{new : true},
+); 
+
+
     return res.status(200).json({
       latitude : lat,
       longitude : lng
@@ -53,5 +61,7 @@ export const geocodeOwnerAddress = async (req,res) => {
     throw new Error("Geocoding failed: " + response.data.status);
   }
 
-  
+}catch(error){
+  console.error("error found" , error)
+}
 };
