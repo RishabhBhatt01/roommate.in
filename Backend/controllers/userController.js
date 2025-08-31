@@ -10,9 +10,7 @@ export const getUsers = async(req,res) =>{
 }
 export const getUser = async (req,res) =>{
   try{
-    console.log("At least visited to getUser")
     const userId = req.user._id;
-    const userRole = req.user.role;
 
     if(!userId){
       return res.status(404).json({message : "User not found"});
@@ -26,7 +24,6 @@ export const getUser = async (req,res) =>{
       role : userData.role,
       name : userData.username
     })
-    console.log(userData.role);
 
 
   }catch(error){
