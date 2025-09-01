@@ -11,9 +11,7 @@ const Home = () => {
         withCredentials : true,
       })
 
-      console.log(Response.data.role);
-      console.log(Response.data.name)
-      setName(Response.data.name);
+      setName(Response.data.name + " role " + Response.data.role);
 
     } catch (error) {
       if(error.response){
