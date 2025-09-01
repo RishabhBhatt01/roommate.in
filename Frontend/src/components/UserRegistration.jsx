@@ -11,9 +11,7 @@ const UserRegistration = () =>{
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
-
     try{
-
       const userResponse = await axios.post("http://localhost:5000/api/register-user",
         {
       username,
@@ -22,18 +20,15 @@ const UserRegistration = () =>{
         }
       );
       console.log(userResponse.data);
-      
       const otpResponse = await axios.post("http://localhost:5000/api/send-otp",
         {phone}
       )
       console.log("OTP sent response:", otpResponse.data);
       const sessionId = otpResponse.data.sessionId;
-
       console.log("session id received",sessionId);
       navigate("/verify",{state : {sessionId,phone}})
-
-
-    } catch(error) {
+    }
+     catch(error) {
   if (error.response) {
     alert(error.response.data.error || "Something went wrong");
     console.log(error.response.data);
