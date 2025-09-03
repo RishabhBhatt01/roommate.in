@@ -22,7 +22,22 @@ const userSchema = new mongoose.Schema({
   profilePicture : {
     type : String,
     default : "",
-  },                
+  },
+  userAddress : {
+    type : String,
+    default : ""
+  },
+  addressCoordinates : {
+    type:{
+      type : String,
+      enum : ["Point"],
+      default : "Point"
+    },
+    coordinates : {
+      type : [Number],
+      default : [0,0],
+    }
+  },
 }, {timestamps : true});
 
 const User = mongoose.model('User',userSchema);
