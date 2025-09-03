@@ -11,6 +11,7 @@ import loginRoutes from './Routes/loginRoutes.js'
 import ownerRoutes from './Routes/ownerRoutes.js'
 import addressRoutes from './Routes/addressRoutes.js'
 import roomRoutes from './Routes/roomRoutes.js'
+import userAddressRoutes from './Routes/userAddressRoutes.js'
 
 // dotenv.config is used to load environment variables
 dotenv.config();
@@ -40,6 +41,7 @@ app.use('/api',loginRoutes);
 app.use('/api',ownerRoutes);
 app.use('/api',roomRoutes);
 app.use('/api',addressRoutes);
+app.use('/api',userAddressRoutes)
 
 // Test route
 app.get('/',(req,res) => {
