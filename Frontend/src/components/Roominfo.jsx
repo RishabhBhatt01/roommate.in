@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 const RoomInfo = () =>{
 
     const [submitting,setSubmitting] =useState(false);
-    const [roomAddress,setRoomAddress] = useState("");
+    const [city,setCity] = useState("");
     const [houseNumber,setHouseNumber] = useState("");
     const [pinCode,setPinCode] = useState("");
     const [roomSize,setRoomSize] = useState("");
     const [landMark,setLandMark] = useState("");
     const [roomPrice,setRoomPrice] = useState("");
+    const [district,setDistrict] = useState("");
+    const [state,setState] = useState("");
     const navigate = useNavigate();
 
 
@@ -22,10 +24,12 @@ const RoomInfo = () =>{
   try{
     const response = await axios.post("http://localhost:5000/api/room-info",
 
-        {roomAddress,houseNumber,pinCode,landMark,roomSize,roomPrice},
+        {houseNumber,city,pinCode,landMark,district,state,roomSize,roomPrice},
         {withCredentials : true}
     )
+    
     console.log(response.data);
+
     alert("sucessfully submitted");
     navigate("/room-img")
 
@@ -44,30 +48,31 @@ const RoomInfo = () =>{
     <h1>Room's Information</h1>
     <form onSubmit={handleSubmit}>
 
-{/*  Entering address */}
-      <label htmlFor="">Enter room's address : </label>
-      <input type="text" 
-      id="address"
-      placeholder="Enter room address"
-      name="roomAddress"
-      value={roomAddress}
-      onChange={(e) => setRoomAddress(e.target.value)}
-      required
-      />
-
-      <br /><br />
-
       {/* Enter flat/house/street number and name */}
 
       <label htmlFor="houseNumber">Enter House Number </label>
       <input 
       id="houseNumber"
-      type="number"
+      type="string"
       placeholder="like b12, 307 (seperate it using comma)"
       name="houseNumber"
       value={houseNumber}
       onChange={(e) => setHouseNumber(e.target.value)}
+      required
       />
+      <br /><br />
+
+      {/*  Entering city / town */}
+      <label htmlFor="city">Enter city / town / village : </label>
+      <input type="text" 
+      id="city"
+      placeholder="Enter your city"
+      name="city"
+      value={city}
+      onChange={(e) => setCity(e.target.value)}
+      required
+      />
+
       <br /><br />
 
       {/* Entering PIN */}
@@ -75,12 +80,13 @@ const RoomInfo = () =>{
       <label htmlFor="pinCode">Enter Pin Code</label>
       <input 
       id="pinCode"
-      type="number"
+      type="string"
       pattern="\d{6}"
       placeholder="Enter pin code"
       name="pinCode"
       value={pinCode}
       onChange={(e) => setPinCode(e.target.value)}
+      required
       />
       <br /><br />
 
@@ -95,6 +101,33 @@ const RoomInfo = () =>{
       />
       <br /><br />
 
+    {/* Enter your district */}
+    <label htmlFor="district">Enter Your District</label>
+      <input 
+      id="district"
+      type="text"
+      placeholder="eg. Pithoragarh"
+      name="district"
+      value={district}
+      onChange={(e) => setDistrict(e.target.value)}
+      />
+      <br /><br />
+
+
+
+    {/* Enter your State */}
+    <label htmlFor="state">Enter Your State</label>
+      <input 
+      id="state"
+      type="text"
+      placeholder="eg. U.P"
+      name="state"
+      value={state}
+      onChange={(e) => setState(e.target.value)}
+      />
+      <br /><br />
+
+      
   {/* Enter room Size */}
       <label htmlFor="roomSize">Enter Room size</label>
       <input 
@@ -105,6 +138,7 @@ const RoomInfo = () =>{
       name="roomSize"
       value={roomSize}
       onChange={(e) => setRoomSize(e.target.value)}
+      required
       />
       <br /><br />
 
@@ -117,6 +151,7 @@ const RoomInfo = () =>{
       name="roomPrice"
       value={roomPrice} 
       onChange={(e) => setRoomPrice(e.target.value)}
+      required
 
 
       /><br /><br />
