@@ -33,8 +33,6 @@ try{
   const pin = room.pinCode;
   const houseNumber = room.houseNumber;
 
-
-  console.log(houseNumber + "," + address + pin);
   const fullAddress = houseNumber + "," + address + "+" + pin
   
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullAddress)}&key=${GOOGLE_MAPS_API_KEY}`;
