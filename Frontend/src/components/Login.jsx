@@ -10,7 +10,6 @@ const Login = () =>{
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log("Login credentials sent");
 
     setLoggingin(true);
 
@@ -20,7 +19,6 @@ const Login = () =>{
         {phone,password},
         {withCredentials : true},
       )
-      console.log("server login  response : ",response.data);
       navigate("/home");
       setPassword("");
       setphone("");
