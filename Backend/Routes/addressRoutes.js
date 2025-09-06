@@ -4,6 +4,6 @@ import { requireAuth } from "../middlewares/JWT.js";
 
 const router = express.Router();
 
-router.get("/address",requireAuth,geocodeOwnerAddress);
+router.get("/addressCoordinates",requireAuth,geocodeOwnerAddress);
 
 export default router;
