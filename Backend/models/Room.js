@@ -16,14 +16,6 @@ const roomSchema = new mongoose.Schema({
     type : String,
     required : true,
   },
-  houseNumber : {
-    type : String,
-    required : true,
-  },
-  pinCode : {
-    type : String,
-    required : true,
-  },
   landMark : {
     type : String,
   },
