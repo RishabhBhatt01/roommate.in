@@ -16,5 +16,4 @@ router.post( "/upload",requireAuth,upload.single("file"),
   },
   imageResponse
 );
-
 export default router;
