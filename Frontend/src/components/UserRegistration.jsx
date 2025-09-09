@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import "tailwindcss"
 
 const UserRegistration = () =>{
   const [username,setusername] = useState("");
@@ -40,7 +41,10 @@ const UserRegistration = () =>{
   }
 
   return (
+    <div className="w-screen h-screen bg-blue-200">
+    <div className="ml-118 mx-auto mt-50 my-auto w-1/4 bg-red-200">
     <form onSubmit = {handleSubmit}>
+      
       <label>Enter your name </label>
       <input
       type="text"
@@ -48,7 +52,7 @@ const UserRegistration = () =>{
       onChange={(e) => setusername(e.target.value)}
       placeholder = "eg. Rishabh Bhatt"
       required
-      />
+      /> <br /><br />
 
       <label>Enter your role</label><br/>
       <input
@@ -83,12 +87,14 @@ const UserRegistration = () =>{
       value={phone}
       />
       <br /><br />
-      <button type="submit">Register & Send OTP</button>
+      <button type="submit">Register & Send OTP</button><br /><br />
 
       <Link to="/login">Already have an account? Log in</Link>
 
 
     </form>
+    </div>
+    </div>
   )
 }
 export default UserRegistration;
