@@ -41,10 +41,11 @@ const UserRegistration = () =>{
   }
 
   return (
-    <div className="w-screen h-screen bg-blue-200">
-    <div className="ml-118 mx-auto mt-50 my-auto w-1/4 bg-red-200">
+    <div className="w-full h-full bg-blue-200 flex items-center justify-center">
+    <div className=" w-1/3 h-2/3 border rounded-xl border-transparent bg-red-100 flex items-center justify-center">
     <form onSubmit = {handleSubmit}>
       
+      <div className="w-full">
       <label>Enter your name </label>
       <input
       type="text"
@@ -53,6 +54,7 @@ const UserRegistration = () =>{
       placeholder = "eg. Rishabh Bhatt"
       required
       /> <br /><br />
+      </div>
 
       <label>Enter your role</label><br/>
       <input
