@@ -45,14 +45,15 @@ const UserRegistration = () =>{
     <div className=" w-1/3 h-2/3 border rounded-xl border-transparent bg-red-100 flex items-center justify-center">
     <form onSubmit = {handleSubmit}>
       
-      <div className="w-full">
-      <label>Enter your name </label>
+      <div className="bg-blue-50 flex items-center justify-center">
+      <label>Enter your name </label> <br />
       <input
       type="text"
       value={username}
       onChange={(e) => setusername(e.target.value)}
       placeholder = "eg. Rishabh Bhatt"
       required
+      className="border rounded ml-5"
       /> <br /><br />
       </div>
 
