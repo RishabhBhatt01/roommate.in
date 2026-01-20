@@ -32,8 +32,6 @@ function App() {
         <Route path='/available-rooms' element = {<AvailableRooms/>}/>
         <Route path='/user-address' element = {<UserAddress/>}/>
 
-
-
         {/* catch all other routes */}
 
         <Route path='*' element = {<Navigate to ="/"/>}  />

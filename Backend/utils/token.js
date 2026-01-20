@@ -10,14 +10,7 @@ const cookieToken = (user) => {
   };
 
   // Sign the token with secret key and set expiration
-  const token = jwt.sign(
-    payload,
-    JWT_SECRET_KEY,
-    { 
-      expiresIn: "7d",
-      issuer: "roommate.in"
-    }
-  );
+  const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "7d", issuer: "roommate.in"});
   return token;
 };
 

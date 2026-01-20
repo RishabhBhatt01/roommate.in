@@ -42,20 +42,25 @@ const UserRegistration = () =>{
 
   return (
     <div className="w-full h-full bg-blue-200 flex items-center justify-center">
-    <div className=" w-1/3 h-2/3 border rounded-xl border-transparent bg-red-100 flex items-center justify-center">
+    <div className=" w-1/3 h-2/3 border rounded-xl border-transparent bg-red-100 flex justify-center ">
+
+    <div className="form-contents bg-yellow-50 mt-4">
     <form onSubmit = {handleSubmit}>
       
       <div className="bg-blue-50 flex items-center justify-center">
-      <label>Enter your name </label> <br />
+      <label>Enter your name </label> <br /> 
+      </div>
+
+      <div className="flex items-center justify-center">
       <input
       type="text"
       value={username}
       onChange={(e) => setusername(e.target.value)}
       placeholder = "eg. Rishabh Bhatt"
       required
-      className="border rounded ml-5"
-      /> <br /><br />
-      </div>
+      class="border-b-2 rounded ml-5 "
+      /> <br /><br /></div>
+      
 
       <label>Enter your role</label><br/>
       <input
@@ -96,6 +101,7 @@ const UserRegistration = () =>{
 
 
     </form>
+    </div>
     </div>
     </div>
   )
