@@ -23,7 +23,7 @@ const SendPassword = () => {
       alert("Password set Successfully");
       console.log("server response : ",response.data);
       setpassword("") // clear input after sending password #good practice
-      navigate("/user-address")
+      navigate("/owner")
     }catch(error){
       console.error("Error sending password",error);
       setsubmitting(false);
