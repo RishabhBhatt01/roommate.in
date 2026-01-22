@@ -12,6 +12,7 @@ import RoomInfo from './components/Roominfo.jsx';
 import RoomImg from './components/Roomimage.jsx';
 import AvailableRooms from './components/AvailableRooms.jsx';
 import UserAddress from './components/UserAddress.jsx';
+import OwnerDashboard from './components/OwnerDashboard.jsx';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path='/room-img' element = {<RoomImg/>}/>
         <Route path='/available-rooms' element = {<AvailableRooms/>}/>
         <Route path='/user-address' element = {<UserAddress/>}/>
+        <Route path='/owner-dashboard' element = {<OwnerDashboard/>} />
 
         {/* catch all other routes */}
 
