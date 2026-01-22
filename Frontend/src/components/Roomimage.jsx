@@ -1,55 +1,46 @@
 import React,{useState} from "react";
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 const RoomImg = ()=> {
 
-  const [files, setFiles] = useState({
-  room1: null,
-  room2: null,
-  room3: null,
-  toilet: null,
-  bathroom: null,
-  balcony: null
-});
+  const [file, setFile] = useState(null);
+  const navigate = useNavigate();
 
 
-const handleFileChange = (e) => {
-  setFiles(prev => ({
-    ...prev,
-    [e.target.id]: e.target.files[0]
-  }));
-};
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]); // Save the selected file to state
+  };
 
 
+  const handleSubmit = async () => {
+    if (!file) {
+      alert("Please select an image before uploading.");
+      return;
+    }
 
-  const handleSubmit=async()=>{
-    if(!files.room1 || !files.toilet) {
-  alert("Required images missing");
-  return;
-}
-
+    // 5. Prepare the form data (important for file uploads)
     const formData = new FormData();
-    Object.entries(files).forEach(([key, file]) => {
-    if (file) formData.append(key, file);
-});
+    formData.append("file", file); // "file" is the key that backend will use
 
-    try{
-      // send a post request to backend
-      
-      const response = await axios.post("http://localhost:5000/api/upload", formData,{
+    try {
+      // 6. Send a POST request to backend (make sure this path matches your backend route)
+      const response = await axios.post("http://localhost:5000/api/upload/room", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Required for file uploads
+        },
         withCredentials : true
       });
 
-      alert("Image uploaded successfully");
-      console.log("Server response : ",response.data);
-
-    }catch(error){
-      console.error("Upload failed : ",error);
-      alert("Image upload failed");
-
+      // 7. Handle success
+      alert("Image uploaded successfully!");
+      console.log("Server response:", response.data);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Image upload failed.");
     }
-    
-  }
+  };
+
   return(
     <>
     <h1>upload images</h1>
@@ -60,6 +51,8 @@ const handleFileChange = (e) => {
     accept="image/*" onChange={handleFileChange}
     required
     />
+
+    <button type="button" onClick={handleSubmit}>UPLOAD</button>
     <br /><br />
 
 
@@ -69,6 +62,7 @@ const handleFileChange = (e) => {
     id="room2"
     accept="image/*" onChange={handleFileChange}
     />
+    <button type="button" onClick={handleSubmit}>UPLOAD</button>
     <br /><br />
 
     <label htmlFor="room3">Upload Room3 image(optional)</label>
@@ -77,6 +71,7 @@ const handleFileChange = (e) => {
     id="room3"
     accept="image/*" onChange={handleFileChange}
     />
+    <button type="button" onClick={handleSubmit}>UPLOAD</button>
     <br /><br />
 
     <label htmlFor="toilet">upload toilet image</label>
@@ -86,6 +81,7 @@ const handleFileChange = (e) => {
     accept="image/*" onChange={handleFileChange}
     required
     />
+    <button type="button" onClick={handleSubmit}>UPLOAD</button>
     <br /><br />
 
     <label htmlFor="bathroom">upload bathroom image(if not attached)</label>
@@ -94,6 +90,7 @@ const handleFileChange = (e) => {
     id="bathroom"
     accept="image/*" onChange={handleFileChange}
     />
+    <button type="button" onClick={handleSubmit}>UPLOAD</button>
     <br /><br />
 
     <label htmlFor="balcony">upload balcony image(if any)</label>
@@ -102,9 +99,14 @@ const handleFileChange = (e) => {
     id="balcony"
     accept="image/*" onChange={handleFileChange}
     />
+    <button type="button" onClick={handleSubmit}>UPLOAD</button>
     <br /><br />
 
-    <button type="button" onClick={handleSubmit}>UPLOAD</button>
+<button type="button" onClick={() => navigate('/owner-dashboard')}>
+  next
+</button>
+
+    
     </>
   )
 }
