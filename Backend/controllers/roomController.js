@@ -1,11 +1,9 @@
 import axios from "axios";
 import Owner from "../models/Owner.js";
 import Room from "../models/Room.js";
-import { GOOGLE_MAPS_API_KEY } from "../config/envConfig.js";
 
 const roomController = async (req, res) => {
   try {
-    console.log("📌 Reached roomController");
 
     // Extract details from request body
     const {
@@ -29,21 +27,31 @@ const roomController = async (req, res) => {
     const ownerName = owner.ownerName;
 
     // Build full address string (formatted with commas)
-    const fullAddress = `${houseNumber}, ${landMark}, ${city}, ${district}, ${state}, ${pinCode}`;
+    // const fullAddress = `${houseNumber}, ${landMark}, ${city}, ${district}, ${state}, ${pinCode}`;
+    const fullAddress = `${city}, ${district}, ${state}, ${pinCode}, India`;
 
-    // Call Google Maps Geocoding API
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      fullAddress
-    )}&key=${GOOGLE_MAPS_API_KEY}`;
+    console.log(fullAddress);
 
-    const response = await axios.get(url);
+    // Call nominatim api
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fullAddress)}&format=json`;
 
-    if (response.data.status !== "OK") {
-      throw new Error("Geocoding failed: " + response.data.status);
-    }
 
-    // Extract latitude and longitude
-    const { lat, lng } = response.data.results[0].geometry.location;
+    const response = await axios.get(url,{
+  headers: {
+    "User-Agent": "roommate.in"
+  }
+}
+);
+
+  // 2. Check: address resolve hua ya nahi
+  if (response.data.length === 0) {
+    // API chali, par address nahi mila
+    throw new Error("Address not found");
+  }
+
+  // 3. Latitude & Longitude 
+  const lat = Number(response.data[0].lat);
+  const lng = Number(response.data[0].lon);
 
     // Create new Room with coordinates included
     const newRoom = new Room({
