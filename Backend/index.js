@@ -2,23 +2,29 @@ import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose';
 import cors from "cors";
+import cookieParser from 'cookie-parser';
 import userRoute from './Routes/userRoutes.js';
 import otpRouter from "./Routes/otpRoutes.js";
 import imageRoutes from "./Routes/imageRoutes.js";
 import passwordRoutes from "./Routes/passwordRoutes.js"
-import cookieParser from 'cookie-parser';
 import loginRoutes from './Routes/loginRoutes.js'
 import ownerRoutes from './Routes/ownerRoutes.js'
 import addressRoutes from './Routes/addressRoutes.js'
 import roomRoutes from './Routes/roomRoutes.js'
-import userAddressRoutes from './Routes/userAddressRoutes.js'
-import nearbyRoomRoutes from './Routes/nearbyRoomRoutes.js'
+import userAddressRoutes from './Routes/userAddressRoutes.js';
+import nearbyRoomRoutes from './Routes/nearbyRoomRoutes.js';
+import uploadRoomImg from './Routes/roomImageRoutes.js';
+import dashboardRoutes from './Routes/dashboardRoutes.js';
+
+
 
 // dotenv.config is used to load environment variables
 dotenv.config();
 
+
 // create express app
 const app = express();
+
 
 // Get values from .env
 
@@ -42,8 +48,10 @@ app.use('/api',loginRoutes);
 app.use('/api',ownerRoutes);
 app.use('/api',roomRoutes);
 app.use('/api',addressRoutes);
-app.use('/api',userAddressRoutes)
-app.use('/api',nearbyRoomRoutes)
+app.use('/api',userAddressRoutes);
+app.use('/api',nearbyRoomRoutes);
+app.use('/api',uploadRoomImg);
+app.use('/api',dashboardRoutes)
 
 // Test route
 app.get('/',(req,res) => {
