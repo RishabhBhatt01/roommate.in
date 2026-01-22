@@ -9,7 +9,7 @@ const Password = async(req,res)=>{
     return res.status(400).json({error : "password is required"});
   }
   
-  const userId = req.user.id;
+  const userId = req.user._id;
 
   // hashing the password
 
