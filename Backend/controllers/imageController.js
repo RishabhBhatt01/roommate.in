@@ -9,7 +9,6 @@ export const imageResponse = async(req, res) => {
   }
 
   const userId = req.user._id;
-  console.log(userId);
   const updatedUser = await User.findByIdAndUpdate(
     userId,
     {profilePicture : req.file.path},
