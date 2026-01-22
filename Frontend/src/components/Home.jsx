@@ -52,6 +52,7 @@ const Home = () => {
 
       <a href="/upload">upload profile picture</a>
       <a href="/owner" style={{marginLeft:"50%"}}>owner's tab</a> <br /><br />
+      <a href="/owner-dashboard">Dashboard</a>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="range">RANGE km</label>
