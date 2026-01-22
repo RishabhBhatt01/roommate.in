@@ -26,6 +26,11 @@ const roomSchema = new mongoose.Schema({
     type : String,
     required : true,
   },
+  roomImages : [{
+    url : String,
+    publicId : String,
+  }],
+
   addressCoordinates : {
     
     type : {
@@ -41,5 +46,5 @@ const roomSchema = new mongoose.Schema({
 })
 
 roomSchema.index({ addressCoordinates: "2dsphere" });
-const Room = mongoose.model('Room',roomSchema);
+const Room =mongoose.model('Room', roomSchema);
 export default Room;
