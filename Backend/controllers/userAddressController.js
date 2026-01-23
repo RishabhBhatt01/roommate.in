@@ -1,5 +1,4 @@
 import User from '../models/User.js'
-import { GOOGLE_MAPS_API_KEY } from '../config/envConfig.js';
 import axios from "axios";
 
 const userAddressController = async(req,res) =>{
@@ -10,35 +9,48 @@ const userAddressController = async(req,res) =>{
       return res.status(404).json({error : "User not found"});
     }
 
-    const {building,city,landmark,district,state} = req.body;
-    const address = (building + " " + city + " " + landmark + " " + district + " " + state )
+    const {city,district,state} = req.body;
+
+    const fullAddress = `${city}, ${district}, ${state}, India`;
 
 
 
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`;
+    // Call nominatim api
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fullAddress)}&format=json`;
 
-  
-  
-  const response = await axios.get(url);
 
-  if (response.data.status === "OK") {
-    const { lat, lng } = response.data.results[0].geometry.location;
+    const response = await axios.get(url,{
+  headers: {
+    "User-Agent": "roommate.in"
+  }
+}
+);
+
+  // 2. Check: address resolve hua ya nahi
+  if (response.data.length === 0) {
+    // API chali, par address nahi mila
+    throw new Error("Address not found");
+  }
+
+  // 3. Latitude & Longitude 
+  const lat = Number(response.data[0].lat);
+  const lng = Number(response.data[0].lon);
+
 
       // Update user with address + coordinates
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
-        userAddress: address,
+        userAddress: fullAddress,
         addressCoordinates: { type: "Point", coordinates: [lng, lat] },
       },
       { new: true }
     );
-    return res.json({ message: "Address updated successfully", user: updatedUser });
-  }else {
-  return res.status(400).json({ error: "Geocoding failed", details: response.data.status });
+    return res.json({ message: "Address updated successfully", user: updatedUser.addressCoordinates });
+    
+  }catch (error) {
+  console.log(error);
+  return res.status(500).json({ error: "Failed to save user address" });
 }
-    }catch(error){
-    console.log(error);
-  }
 }
 export default userAddressController
