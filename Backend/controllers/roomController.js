@@ -2,12 +2,13 @@ import axios from "axios";
 import Owner from "../models/Owner.js";
 import Room from "../models/Room.js";
 
+// Info : it take room's address from Roominfo.jsx, roomRoutes.js -> roomController.js
+
 const roomController = async (req, res) => {
   try {
 
     // Extract details from request body
     const {
-      houseNumber,
       city,
       pinCode,
       landMark,
@@ -29,8 +30,6 @@ const roomController = async (req, res) => {
     // Build full address string (formatted with commas)
     // const fullAddress = `${houseNumber}, ${landMark}, ${city}, ${district}, ${state}, ${pinCode}`;
     const fullAddress = `${city}, ${district}, ${state}, ${pinCode}, India`;
-
-    console.log(fullAddress);
 
     // Call nominatim api
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fullAddress)}&format=json`;
