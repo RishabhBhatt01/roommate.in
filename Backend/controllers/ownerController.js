@@ -38,9 +38,17 @@ const ownerController = async(req,res) =>{
     const savedOwner = await newOwner.save();
     if(!savedOwner){
       return res.status(500).json({error : "Internal server error"});
-    }
-    res.status(200).json({message : "succes"});
-    console.log("ownersaved",savedOwner);
+    }   
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        isOwnerDetailsComplete : true,
+      },
+      { new: true }
+    );
+    
+    res.status(200).json({message : "success"});
 
   }catch(error){
     console.error("Detailed error",error)
