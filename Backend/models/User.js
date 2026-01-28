@@ -27,6 +27,19 @@ const userSchema = new mongoose.Schema({
     type : String,
     default : ""
   },
+    isProfileComplete : {
+    type : Boolean,
+    default : false
+  },
+  isOwnerDetailsComplete : {
+      type : Boolean,
+      default : false,
+  },
+  isCreatedRoom : {
+    type : Boolean,
+    default : false,
+  },
+
   addressCoordinates : {
     type:{
       type : String,
