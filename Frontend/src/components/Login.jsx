@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 const Login = () =>{
   const [phone,setphone] = useState("");
   const [password,setPassword] = useState("");
   const [loggingin,setLoggingin] = useState(false);
   const navigate = useNavigate();
+  const { refreshUser } = useAuth();
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -19,6 +21,7 @@ const Login = () =>{
         {phone,password},
         {withCredentials : true},
       )
+      await refreshUser();
       navigate("/home");
       setPassword("");
       setphone("");
