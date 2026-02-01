@@ -2,6 +2,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
+import { useAuth } from "../context/authContext";
 
 
 
@@ -11,6 +12,7 @@ const VerifyOtp = () =>{
   const [otp,setOtp] = useState("");
   const [isVerifying,setIsVerifying] = useState(false);
   const navigate = useNavigate();
+  const { refreshUser } = useAuth();
 
   useEffect(() => {
   if (!sessionId) {
@@ -38,7 +40,8 @@ const VerifyOtp = () =>{
       );
 
       // Checking if otp is verified or not
-      if(response.data.verified){        
+      if(response.data.verified){   
+        await refreshUser();     
         navigate("/password");
       } else{
         alert("otp verification failed")
