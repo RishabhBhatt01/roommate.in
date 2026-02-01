@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useState , useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Navigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 const RoomInfo = () =>{
 
     const [submitting,setSubmitting] =useState(false);
     const [city,setCity] = useState("");
-    const [houseNumber,setHouseNumber] = useState("");
     const [pinCode,setPinCode] = useState("");
     const [roomSize,setRoomSize] = useState("");
     const [landMark,setLandMark] = useState("");
@@ -14,6 +14,8 @@ const RoomInfo = () =>{
     const [district,setDistrict] = useState("");
     const [state,setState] = useState("");
     const navigate = useNavigate();
+
+    const {refreshUser } = useAuth();
 
 
   const handleSubmit = async(e) =>{
@@ -24,14 +26,17 @@ const RoomInfo = () =>{
   try{
     const response = await axios.post("http://localhost:5000/api/room-info",
 
-        {houseNumber,city,pinCode,landMark,district,state,roomSize,roomPrice},
+        {city,pinCode,landMark,district,state,roomSize,roomPrice},
         {withCredentials : true}
     )
     
-    console.log(response.data);
+    const roomId = response.data.roomId;
 
     alert("sucessfully submitted");
-    navigate("/room-img")
+    setSubmitting(false);
+    await refreshUser();
+    navigate(`/room-img/${roomId}`);
+    
 
   }catch(error){
     setSubmitting(false)
@@ -49,18 +54,6 @@ const RoomInfo = () =>{
     <form onSubmit={handleSubmit}>
 
       {/* Enter flat/house/street number and name */}
-
-      <label htmlFor="houseNumber">Enter House Number </label>
-      <input 
-      id="houseNumber"
-      type="string"
-      placeholder="like b12, 307 (seperate it using comma)"
-      name="houseNumber"
-      value={houseNumber}
-      onChange={(e) => setHouseNumber(e.target.value)}
-      required
-      />
-      <br /><br />
 
       {/*  Entering city / town */}
       <label htmlFor="city">Enter city / town / village : </label>
