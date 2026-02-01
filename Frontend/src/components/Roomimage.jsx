@@ -1,113 +1,88 @@
-import React,{useState} from "react";
-import axios from 'axios'
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams , Navigate } from "react-router-dom";
+import { useAuth } from "../context/authContext.jsx";
 
-const RoomImg = ()=> {
+const RoomImg = () => {
+  const { roomId } = useParams();
 
   const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
   const navigate = useNavigate();
 
+  const { refreshUser } = useAuth();
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]); // Save the selected file to state
-  };
-
-
-  const handleSubmit = async () => {
+  // upload single image
+  const handleUpload = async () => {
     if (!file) {
-      alert("Please select an image before uploading.");
+      alert("Please select an image");
       return;
     }
 
-    // 5. Prepare the form data (important for file uploads)
     const formData = new FormData();
-    formData.append("file", file); // "file" is the key that backend will use
+    formData.append("file", file);
+    formData.append("roomId", roomId);
 
     try {
-      // 6. Send a POST request to backend (make sure this path matches your backend route)
-      const response = await axios.post("http://localhost:5000/api/upload/room", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Required for file uploads
-        },
-        withCredentials : true
-      });
+      setUploading(true);
 
-      // 7. Handle success
-      alert("Image uploaded successfully!");
-      console.log("Server response:", response.data);
+      await axios.post(
+        "http://localhost:5000/api/upload/room",
+        formData,
+        { withCredentials: true }
+      );
+
+      alert("Image uploaded");
+      setFile(null);
     } catch (error) {
-      console.error("Upload failed:", error);
-      alert("Image upload failed.");
+      console.error(error);
+      alert("Upload failed");
+    } finally {
+      setUploading(false);
     }
   };
 
-  return(
+  // finalize room (called ONCE)
+  const handleFinish = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/api/finalizeRoom",
+        {},
+        { withCredentials: true }
+      );
+
+      await refreshUser();
+      navigate("/owner-dashboard");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to finalize room");
+    }
+  };
+
+  return (
     <>
-    <h1>upload images</h1>
-    <label htmlFor="room1">Upload Room1 image</label>
-    <input 
-    type="file" 
-    id="room1"
-    accept="image/*" onChange={handleFileChange}
-    required
-    />
+      <h1>Upload Room Images</h1>
 
-    <button type="button" onClick={handleSubmit}>UPLOAD</button>
-    <br /><br />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setFile(e.target.files[0])}
+      />
 
+      <br /><br />
 
-    <label htmlFor="room2">Upload Room2 image(optional)</label>
-    <input 
-    type="file" 
-    id="room2"
-    accept="image/*" onChange={handleFileChange}
-    />
-    <button type="button" onClick={handleSubmit}>UPLOAD</button>
-    <br /><br />
+      <button onClick={handleUpload} disabled={uploading}>
+        {uploading ? "Uploading..." : "Upload Image"}
+      </button>
 
-    <label htmlFor="room3">Upload Room3 image(optional)</label>
-    <input 
-    type="file" 
-    id="room3"
-    accept="image/*" onChange={handleFileChange}
-    />
-    <button type="button" onClick={handleSubmit}>UPLOAD</button>
-    <br /><br />
+      <br /><br />
 
-    <label htmlFor="toilet">upload toilet image</label>
-    <input 
-    type="file" 
-    id="toilet"
-    accept="image/*" onChange={handleFileChange}
-    required
-    />
-    <button type="button" onClick={handleSubmit}>UPLOAD</button>
-    <br /><br />
-
-    <label htmlFor="bathroom">upload bathroom image(if not attached)</label>
-    <input 
-    type="file" 
-    id="bathroom"
-    accept="image/*" onChange={handleFileChange}
-    />
-    <button type="button" onClick={handleSubmit}>UPLOAD</button>
-    <br /><br />
-
-    <label htmlFor="balcony">upload balcony image(if any)</label>
-    <input 
-    type="file" 
-    id="balcony"
-    accept="image/*" onChange={handleFileChange}
-    />
-    <button type="button" onClick={handleSubmit}>UPLOAD</button>
-    <br /><br />
-
-<button type="button" onClick={() => navigate('/owner-dashboard')}>
-  next
-</button>
-
-    
+      <button onClick={handleFinish}>
+        Finish Room
+      </button>
     </>
-  )
-}
+  );
+};
+
 export default RoomImg;
