@@ -1,45 +1,61 @@
-import { useState } from 'react'
-import { Navigate } from 'react-router-dom';
-import ImageUpload from './components/ImageUpload.jsx';
-import {BrowserRouter as Router,Routes,Route, BrowserRouter} from 'react-router-dom';
-import VerifyOtp from './components/VerifyOtp.jsx';
-import PasswordInput from './components/PasswordInput.jsx'
-import UserRegistration from './components/UserRegistration.jsx'
-import Login from './components/Login.jsx';
-import Home from './components/Home.jsx';
-import Owner from './components/Owner.jsx';
-import RoomInfo from './components/Roominfo.jsx';
-import RoomImg from './components/Roomimage.jsx';
-import AvailableRooms from './components/AvailableRooms.jsx';
-import UserAddress from './components/UserAddress.jsx';
-import OwnerDashboard from './components/OwnerDashboard.jsx';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
+import VerifyOtp from "./components/VerifyOtp.jsx";
+import PasswordInput from "./components/PasswordInput.jsx";
+import UserRegistration from "./components/UserRegistration.jsx";
+import Login from "./components/Login.jsx";
+import Home from "./components/Home.jsx";
+import Owner from "./components/Owner.jsx";
+import RoomInfo from "./components/Roominfo.jsx";
+import RoomImg from "./components/Roomimage.jsx";
+import AvailableRooms from "./components/AvailableRooms.jsx";
+import UserAddress from "./components/UserAddress.jsx";
+import OwnerDashboard from "./components/OwnerDashboard.jsx";
+import AuthGate from "./components/AuthGate.jsx";
+import PrivateRoute from "./routes/privateRoutes.jsx";
+import OwnerRoute from "./routes/ownerRoutes.jsx";
+import ImageUpload from "./components/ImageUpload.jsx";
+import UserDetails from "./components/UserDetails.jsx";
 
 function App() {
   return (
     <BrowserRouter>
+    <AuthGate>
       <Routes>
-        <Route path='/' element = {<UserRegistration/>}/>
-        <Route path='/verify' element = {<VerifyOtp/>} />
-        <Route path="/password" element = {<PasswordInput/>} />
-        <Route path='/login' element = {<Login/>}/>
+        {/* Public */}
+        <Route path="/" element={<UserRegistration />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/verify" element={<VerifyOtp />} />
+        <Route path="/password" element={<PasswordInput />} />
 
 
-        <Route path="/home" element ={<Home/>}/>
-        <Route path="/upload" element = {<ImageUpload/>} />
-        <Route path="/owner"  element = {<Owner/> }/>
-        <Route path='/room-info' element = {<RoomInfo/>}/>        
-        <Route path='/room-img' element = {<RoomImg/>}/>
-        <Route path='/available-rooms' element = {<AvailableRooms/>}/>
-        <Route path='/user-address' element = {<UserAddress/>}/>
-        <Route path='/owner-dashboard' element = {<OwnerDashboard/>} />
+        {/* Logged-in users */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/user-details" element={<UserDetails />} />
+          <Route path="/user-address" element={<UserAddress />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/available-rooms" element={<AvailableRooms />} />
+          <Route path="/user-image" element={<ImageUpload />} />
+          
+        </Route>
 
-        {/* catch all other routes */}
+        {/* Owners only */}
+        <Route element={<OwnerRoute />}>
+          <Route path="/owner" element={<Owner />} />
+          <Route path="/room-info" element={<RoomInfo />} />
+          <Route path="/room-img/:roomId" element={<RoomImg />} />
+          <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+        </Route>
 
-        <Route path='*' element = {<Navigate to ="/"/>}  />
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      </AuthGate>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
+
+  
+
