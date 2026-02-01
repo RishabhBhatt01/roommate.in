@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import "tailwindcss"
 
 const UserRegistration = () =>{
-  const [username,setusername] = useState("");
-  const [role,setRole] = useState("");
+
   const [phone,setPhone] = useState("");
   const navigate = useNavigate();
 
@@ -15,18 +14,16 @@ const UserRegistration = () =>{
     try{
       const userResponse = await axios.post("http://localhost:5000/api/register-user",
         {
-      username,
-      role,
-      phone,
+      // username,
+      // role,
+          phone,
         }
       );
       console.log(userResponse.data);
       const otpResponse = await axios.post("http://localhost:5000/api/send-otp",
         {phone}
       )
-      console.log("OTP sent response:", otpResponse.data);
       const sessionId = otpResponse.data.sessionId;
-      console.log("session id received",sessionId);
       navigate("/verify",{state : {sessionId,phone}})
     }
      catch(error) {
@@ -47,7 +44,7 @@ const UserRegistration = () =>{
     <div className="form-contents bg-yellow-50 mt-4">
     <form onSubmit = {handleSubmit}>
       
-      <div className="bg-blue-50 flex items-center justify-center">
+      {/* <div className="bg-blue-50 flex items-center justify-center">
       <label>Enter your name </label> <br /> 
       </div>
 
@@ -59,10 +56,10 @@ const UserRegistration = () =>{
       placeholder = "eg. Rishabh Bhatt"
       required
       class="border-b-2 rounded ml-5 "
-      /> <br /><br /></div>
+      /> <br /><br /></div> */}
       
 
-      <label>Enter your role</label><br/>
+      {/* <label>Enter your role</label><br/>
       <input
       type="radio"
       id="role1"
@@ -83,7 +80,7 @@ const UserRegistration = () =>{
       />
       <label htmlFor="role2">Owner</label>
 
-      <br /> <br />
+      <br /> <br /> */}
 
       {/* Entering Mobile number */}
 
