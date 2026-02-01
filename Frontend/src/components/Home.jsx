@@ -1,82 +1,67 @@
 import axios from "axios";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+
 const Home = () => {
-  const [name,setName] = useState("");
-  const [range,setRange] = useState("");
+  const [range, setRange] = useState("");
+  const [rooms, setRooms] = useState([]);
+  const { user, loading } = useAuth();
 
-  useEffect(()=>{
+  if (loading || !user) return null;
 
-    const fetchUser = async()=>{
-    try {
-        const Response = await axios.get("http://localhost:5000/api/user",{
-        withCredentials : true,
-      })
-
-      setName(Response.data.name);
-
-    } catch (error) {
-      if(error.response){
-        alert(error.response.data.error || "something fishy")
+  const fetchRooms = async (rangeValue) => {
+    const res = await axios.get(
+      "http://localhost:5000/api/nearby-rooms",
+      {
+        params: rangeValue ? { range: rangeValue } : {},
+        withCredentials: true,
       }
-      console.log(error);
-    }
-  }
-    fetchUser();
-    },[])
+    );
+    setRooms(res.data.rooms);
+  };
 
-
-    const handleSubmit = async(e) =>{
-      e.preventDefault();
-      try{
-        console.log("sending file atleast");
-          const getNearRooms = await axios.get("http://localhost:5000/api/nearby-rooms",{
-            range,
-            withCredentials : true
-        })
-        console.log(getNearRooms.data);
-        alert("fetched rooms sucessfully");
-        
-
-      }catch(error){
-        if(error.response){
-          alert(error.response.data.error || "frontend error");
-        }
-        console.log(error);
-
-      }
-    }
+  useEffect(() => {
+    fetchRooms();
+  }, []);
 
   return (
     <>
-      <h1>Welcome , {name}</h1>
+      <h1>Welcome</h1>
 
-      <a href="/upload">upload profile picture</a>
-      <a href="/owner" style={{marginLeft:"50%"}}>owner's tab</a> <br /><br />
-      <a href="/owner-dashboard">Dashboard</a>
+      <Link to="/user-image">upload profile picture</Link>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="range">RANGE km</label>
-        <input type="number" 
-        placeholder="10"
-        id="range"
-        name="range"
-        value={range}
-        min={1}
-        onChange={(e) => setRange(e.target.value)}
+      {/* Owner entry ONLY */}
+      <Link to="/owner" style={{ marginLeft: "50%" }}>
+        owner's tab
+      </Link>
+
+      <br /><br />
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          fetchRooms(range);
+        }}
+      >
+        <label>RANGE km</label>
+        <input
+          type="number"
+          value={range}
+          min={1}
+          onChange={(e) => setRange(e.target.value)}
         />
-
-
         <button type="submit">Get Rooms</button>
-
-
-
       </form>
 
+      <hr />
 
-
-
-      
-      
+      {rooms.map((room) => (
+        <div key={room._id}>
+          <p>{room.roomAddress}</p>
+          <p>{room.roomPrice}</p>
+        </div>
+      ))}
     </>
   );
 };
