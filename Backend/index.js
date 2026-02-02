@@ -15,6 +15,7 @@ import nearbyRoomRoutes from './Routes/nearbyRoomRoutes.js';
 import uploadRoomImg from './Routes/roomImageRoutes.js';
 import dashboardRoutes from './Routes/dashboardRoutes.js';
 import me from './Routes/meRoutes.js'
+import finalizeRoomRoutes from './Routes/finalizeRoomRoute.js'
 
 
 // dotenv.config is used to load environment variables
@@ -51,6 +52,7 @@ app.use('/api',nearbyRoomRoutes);
 app.use('/api',uploadRoomImg);
 app.use('/api',dashboardRoutes);
 app.use('/api',me);
+app.use('/api',finalizeRoomRoutes);
 
 // Test route
 app.get('/',(req,res) => {
