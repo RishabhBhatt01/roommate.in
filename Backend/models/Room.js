@@ -32,7 +32,6 @@ const roomSchema = new mongoose.Schema({
   }],
 
   addressCoordinates : {
-    
     type : {
       type : String,
       enum : ["Point"],
