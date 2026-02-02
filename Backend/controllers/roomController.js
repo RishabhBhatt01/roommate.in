@@ -18,6 +18,7 @@ const roomController = async (req, res) => {
       roomPrice,
     } = req.body;
 
+
     // Find owner based on logged-in user
     const owner = await Owner.findOne({ userId: req.user._id });
     if (!owner) {
@@ -30,7 +31,7 @@ const roomController = async (req, res) => {
     // Build full address string (formatted with commas)
     // const fullAddress = `${houseNumber}, ${landMark}, ${city}, ${district}, ${state}, ${pinCode}`;
     const fullAddress = `${city}, ${district}, ${state}, ${pinCode}, India`;
-
+    
     // Call nominatim api
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(fullAddress)}&format=json`;
 
@@ -52,7 +53,7 @@ const roomController = async (req, res) => {
   const lat = Number(response.data[0].lat);
   const lng = Number(response.data[0].lon);
 
-    // Create new Room with coordinates included
+     // Create new Room with coordinates included
     const newRoom = new Room({
       ownerId,
       ownerName,
@@ -72,7 +73,7 @@ const roomController = async (req, res) => {
     // Success response
     return res.status(201).json({
       message: "Room saved successfully ✅",
-      room: savedRoom,
+      roomId: savedRoom._id,
     });
   } catch (error) {
     console.error("❌ Error in roomController:", error);
