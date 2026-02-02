@@ -1,59 +1,64 @@
-// This page will control how to handle room's image
-import User from '../models/User.js'
-import Owner from '../models/Owner.js'
-import Room from '../models/Room.js'
+import User from "../models/User.js";
+import Owner from "../models/Owner.js";
+import Room from "../models/Room.js";
 
-// Extract user id
-export const roomImageResponse = async(req,res) => {
-  try{
-    const userId = req.user._id;
-    if(!userId){
-      return res.status(404).json({error : "User not found"});
+export const roomImageResponse = async (req, res) => {
+  try {
+    
+    const userId = req.user?._id;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
-    // Fetching owner ID ..
-
-    const owner = await Owner.findOne({userId : userId});
-
-    if(owner == null){
-      return res.status(404).json({error : "Owner not found"});
+    
+    const { roomId } = req.body;
+    if (!roomId) {
+      return res.status(400).json({ error: "roomId is required" });
     }
 
-    const ownerId = owner._id;
-
-    const room = await Room.findOne({ownerId : ownerId});
-
-    if(room == null){
-      return res.status(404).json({error : "Room not found"})
+    
+    const room = await Room.findById(roomId);
+    if (!room) {
+      return res.status(404).json({ error: "Room not found" });
     }
 
-    const roomId = room._id;
-    console.log("Upload file info : ",req.file);
+    
+    const owner = await Owner.findOne({ userId });
+    if (!owner) {
+      return res.status(403).json({ error: "Owner not found" });
+    }
 
-    // Uploading room in room schema, in db
+    if (room.ownerId.toString() !== owner._id.toString()) {
+      return res.status(403).json({ error: "Not authorized for this room" });
+    }
+
+   
+    if (!req.file) {
+      return res.status(400).json({ error: "No image uploaded" });
+    }
+
+    
     const roomImageData = {
-      url : req.file.path,
-      publicId : req.file.filename
+      url: req.file.path,
+      publicId: req.file.filename,
     };
 
-
-    const updatedRoom = await Room.findByIdAndUpdate(
+   
+    await Room.findByIdAndUpdate(
       roomId,
-      { $push: {
-        roomImages: roomImageData
-       } },
-      {new:true}
-    )
+      { $push: { roomImages: roomImageData } },
+      { new: true }
+    );
 
-    res.status(200).json({
-      message : "File upload successfully",
-      imageUrl : req.file.path,
-      publicId : req.file.filename
+    return res.status(200).json({
+      message: "Room image uploaded successfully",
+      imageUrl: req.file.path,
+    });
+
+  } catch (error) {
+    console.error("Upload failed:", error);
+    return res.status(500).json({
+      error: error.message || "Room image upload failed",
     });
   }
-  catch (error){
-    console.error("upload failed",error);
-    res.status(500).json({error : error.message || "upload failed"});
-
-  }
-}
+};
