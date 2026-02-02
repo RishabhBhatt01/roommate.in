@@ -14,7 +14,6 @@ export const imageResponse = async(req, res) => {
     {profilePicture : req.file.path},
     {new:true}
   )
-  console.log(updatedUser)
 
   res.status(200).json({
     message: "File uploaded successfully",
