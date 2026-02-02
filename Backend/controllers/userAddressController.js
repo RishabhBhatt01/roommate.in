@@ -8,6 +8,11 @@ const userAddressController = async(req,res) =>{
     if(!userId){
       return res.status(404).json({error : "User not found"});
     }
+    if (req.user.isProfileComplete) {
+  return res.status(400).json({
+    error: "User address already submitted"
+  });
+}
 
     const {city,district,state} = req.body;
 
@@ -43,6 +48,7 @@ const userAddressController = async(req,res) =>{
       {
         userAddress: fullAddress,
         addressCoordinates: { type: "Point", coordinates: [lng, lat] },
+        isProfileComplete : true,
       },
       { new: true }
     );
