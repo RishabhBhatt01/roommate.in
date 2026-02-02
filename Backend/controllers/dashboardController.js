@@ -1,4 +1,3 @@
-import axios from "axios";
 import User from '../models/User.js'
 import Owner from "../models/Owner.js";
 import Room from "../models/Room.js";
