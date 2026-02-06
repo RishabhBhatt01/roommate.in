@@ -16,6 +16,8 @@ import uploadRoomImg from './Routes/roomImageRoutes.js';
 import dashboardRoutes from './Routes/dashboardRoutes.js';
 import me from './Routes/meRoutes.js'
 import finalizeRoomRoutes from './Routes/finalizeRoomRoute.js'
+import googleRoutes from './Routes/googleAuthRoutes.js'
+import userDetails from './Routes/userDetailsRoutes.js'
 
 
 // dotenv.config is used to load environment variables
@@ -53,6 +55,9 @@ app.use('/api',uploadRoomImg);
 app.use('/api',dashboardRoutes);
 app.use('/api',me);
 app.use('/api',finalizeRoomRoutes);
+app.use('/api',googleRoutes);
+app.use('/api',userDetails);
+
 
 // Test route
 app.get('/',(req,res) => {
