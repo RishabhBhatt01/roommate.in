@@ -37,6 +37,16 @@ const UserRegistration = () =>{
 }
   }
 
+  const handleGoogleLogin = () => {
+    try{
+      window.location.href = "http://localhost:5000/api/auth/google";
+    }catch(error){
+      console.log(error);
+    }
+  
+};
+
+
   return (
     <div className="w-full h-full bg-blue-200 flex items-center justify-center">
     <div className=" w-1/3 h-2/3 border rounded-xl border-transparent bg-red-100 flex justify-center ">
@@ -98,6 +108,17 @@ const UserRegistration = () =>{
 
 
     </form>
+
+    <div className="mt-4">
+  <button
+    type="button"
+    onClick={handleGoogleLogin}
+    className="w-full border p-2 rounded bg-white"
+  >
+    Continue with Google
+  </button>
+</div>
+
     </div>
     </div>
     </div>
