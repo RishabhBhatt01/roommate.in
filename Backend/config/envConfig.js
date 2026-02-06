@@ -16,3 +16,4 @@ export const GEOCODING_SECRET=process.env.GEOCODING_SECRET
 
 // google Client Id
 export const GOOGLE_WEB_CLIENT_ID=process.env.GOOGLE_WEB_CLIENT_ID
+export const GOOGLE_WEB_CLIENT_SECRET=process.env.GOOGLE_WEB_CLIENT_SECRET
