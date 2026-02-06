@@ -13,8 +13,10 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       });
       setUser(res.data);
+      return res.data;
     } catch {
       setUser(null);
+      return null;      
     } finally {
       setLoading(false);
     }
@@ -25,9 +27,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ user, loading, refreshUser: fetchMe }}
-    >
+    <AuthContext.Provider value={{ user, loading, refreshUser: fetchMe }}>
       {children}
     </AuthContext.Provider>
   );
