@@ -7,10 +7,21 @@ const userSchema = new mongoose.Schema({
     type : String,
     enum : ['tenant','owner'],
   },
+  authProvider : {
+    type : String,
+    enum : ["google","phone","both"]
+  },
+  email : {
+    type : String,
+    unique : true
+  },
+  googleId:{
+    type : String
+  },
     phone : {
     type : String,
-    required : true,
-    unique : true,
+    unique: true,
+    sparse: true,
   },
     password : {
     type : String,
@@ -25,7 +36,7 @@ const userSchema = new mongoose.Schema({
     type : String,
     default : ""
   },
-    isProfileComplete : {
+  isProfileComplete : {
     type : Boolean,
     default : false
   },
@@ -37,6 +48,7 @@ const userSchema = new mongoose.Schema({
     type : Boolean,
     default : false,
   },
+
 
   addressCoordinates : {
     type:{
