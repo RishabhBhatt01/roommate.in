@@ -16,6 +16,7 @@ import PrivateRoute from "./routes/privateRoutes.jsx";
 import OwnerRoute from "./routes/ownerRoutes.jsx";
 import ImageUpload from "./components/ImageUpload.jsx";
 import UserDetails from "./components/UserDetails.jsx";
+import OAuthSuccess from "./components/OAuthSuccess.jsx"
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/verify" element={<VerifyOtp />} />
         <Route path="/password" element={<PasswordInput />} />
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
+
 
 
         {/* Logged-in users */}
