@@ -1,4 +1,4 @@
-import User from "../models/User";
+import User from "../models/User.js";
 const userDetailsController = async(req,res)=>{
   try{
     const userId = req.user._id;
@@ -6,8 +6,8 @@ const userDetailsController = async(req,res)=>{
     const updateUser = await User.findByIdAndUpdate(
       userId,
       {
-        role : req.role,
-        username : req.username
+        role : req.body.role,
+        username : req.body.username
       }
 
     )
