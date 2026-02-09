@@ -28,7 +28,6 @@ const googleAuthCallback = async (req, res) => {
     });
 
     oauthClient.setCredentials(tokens);
-    console.log("google tokens  : ",tokens);
 
     // Get user info from Google
 const ticket = await oauthClient.verifyIdToken({
