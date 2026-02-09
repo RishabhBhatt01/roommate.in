@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState , useEffect } from "react"
 import axios from "axios";
 import { useNavigate, Navigate} from "react-router-dom";
 import { useAuth } from "../context/authContext";
@@ -13,14 +13,26 @@ const UserAddress = () =>{
   const [district,setDistrict] = useState("");
   const [state,setState] = useState("");
   const [addressMode,setAddressMode] = useState("manual");
-  const [latitude,setLatitude] = useState("");
-  const [longitude,setLongitude] = useState("");
+  const [latitude,setLatitude] = useState(null);
+  const [longitude,setLongitude] = useState(null);
+  let payload;
+
+          // Verification
+        useEffect(() => {
+  console.log("MODE:", addressMode, "LAT:", latitude, "LNG:", longitude);
+}, [addressMode, latitude, longitude]);
   
 
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
     try{
+      if(addressMode === "gps"){
+        payload = {mode : "gps",latitude,longitude};
+      }else{
+        payload = {mode : "manual",city,district,state}
+      }
+      console.log(payload);
     const response = await axios.post("http://localhost:5000/api/user-address",
       {city,district,state},
       {withCredentials : true}
@@ -28,7 +40,7 @@ const UserAddress = () =>{
     alert("submitted successfully")
     console.log(response.data);
     await refreshUser();
-    navigate("/home");
+    // navigate("/home");
   }catch(error){
     if(error.response){
       alert(error.response.data.error || "Cant read from frontend")
@@ -42,6 +54,7 @@ const UserAddress = () =>{
     // Check browser support
     if(!navigator.geolocation){
       alert("Geolocation is not supported by this browser");
+      return;
     }
 
     // Asking for current location
@@ -58,11 +71,7 @@ const UserAddress = () =>{
         setAddressMode("gps");
 
 
-        // Verification
-        console.log("Latitude:", lat);
-        console.log("Longitude:", lng);
 
-        console.log("MODE:", addressMode, "LAT:", latitude, "LNG:", longitude);
 
         
 
@@ -97,7 +106,7 @@ const UserAddress = () =>{
       }
       setCity(e.target.value);
 }}
-      disabled={addressMode === "gps"}
+      // readOnly={addressMode === "gps"}
       /><br /><br />
 
       {/* <label htmlFor="landmark">Enter a landmark</label>
@@ -121,7 +130,7 @@ const UserAddress = () =>{
       }
       setDistrict(e.target.value);
 }}
-      disabled={addressMode === "gps"}
+      // readOnly={addressMode === "gps"}
       required
       /><br /><br />
 
@@ -137,7 +146,7 @@ const UserAddress = () =>{
       }
       setState(e.target.value);
 }}
-      disabled={addressMode === "gps"}
+      // readOnly={addressMode === "gps"}
 
 
       /><br /><br />
